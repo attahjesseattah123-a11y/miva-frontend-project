@@ -42,10 +42,8 @@ button.addEventListener("click", function () {
     );
 
     if (savedReferralCode !== null) {
-      referralFromURL = savedReferralCode;
-
       referralStatus.textContent =
-        "You were referred by: " + referralFromURL + ".";
+        "You were referred by: " + savedReferralCode + ".";
       const savedReferralUrl = new URL(window.location.origin);
       savedReferralUrl.searchParams.set("ref", savedReferralCode);
       const savedReferralLink = savedReferralUrl.toString();
@@ -68,10 +66,9 @@ button.addEventListener("click", function () {
       );
     } else {
       localStorage.setItem("referralCode_" + upperName, referralCode);
-      referralFromURL = referralCode;
 
       referralStatus.textContent =
-        "You were referred by: " + referralFromURL + ".";
+        "You were referred by: " + referralCode + ".";
 
       const linkText = document.createTextNode("Your referral link is ");
       const referralAnchor = document.createElement("a");
