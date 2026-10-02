@@ -201,6 +201,7 @@ clearHistoryButton.addEventListener("click", function () {
 
     displayReferralHistory();
     displayReferrerSummary();
+    displayMyReferralDashboard();
   }
 });
 
@@ -310,6 +311,9 @@ function displayMyReferralDashboard() {
 
   return;
 }
+
+displayMyReferralDashboard();
+
 result.addEventListener("click", function (event) {
   if (event.target.id === "copyReferralLink") {
     const link = event.target.dataset.link;
