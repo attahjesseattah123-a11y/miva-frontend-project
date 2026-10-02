@@ -112,13 +112,19 @@ saveCustomerButton.addEventListener("click", function () {
 
   const amountReceived = Number(amountReceivedInput.value);
 
-  const commission = amountReceived * 0.1;
-
   if (customerName === "") {
     customerResult.textContent = "Please enter the customer's name.";
 
     return;
   }
+
+  if (!Number.isFinite(amountReceived) || amountReceived <= 0) {
+    customerResult.textContent = "Please enter an amount greater than ₦0.";
+
+    return;
+  }
+
+  const commission = amountReceived * 0.1;
 
   const customerRecord = {
     customerName: customerName,
