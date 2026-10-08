@@ -1,14 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <h1>Hello, World! 👋</h1>
-    <p>I'm learning frontend development.</p>
+    <title>Jesse Phone Services - Referral Program</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
 
-</body>
+  <body>
+    <h1>Refer a Customer and Earn 10%</h1>
+
+    <p>
+      Bring a customer to Jesse Phone Services and earn 10% of the amount I
+      receive from that customer.
+    </p>
+
+    <h2>Enter Your Full Name</h2>
+
+    <label for="referrerName">Referrer Name</label>
+    <input type="text" id="referrerName" placeholder="Full Name" />
+
+    <button id="generateLink">Generate My Referral Link</button>
+    <p id="result"></p>
+    <p id="referralStatus"></p>
+    <h2>Customer Information</h2>
+    <label for="customerName">Customer Name</label>
+    <input type="text" id="customerName" placeholder="Customer Full Name" />
+    <label for="amountReceived">Amount Received</label>
+    <input type="number" id="amountReceived" placeholder="Amount Received" />
+    <button id="saveCustomer">Save Customer</button>
+    <p id="customerResult"></p>
+
+    <h2>Dashboard</h2>
+
+    <div class="dashboard">
+      <div class="card">
+        <h3>Total Customers</h3>
+        <p><span id="totalCustomers">0</span></p>
+      </div>
+
+      <div class="card">
+        <h3>Total Sales</h3>
+        <p>₦<span id="totalSales">0</span></p>
+      </div>
+
+      <div class="card">
+        <h3>Total Commission</h3>
+        <p>₦<span id="totalCommission">0</span></p>
+      </div>
+    </div>
+
+    <h2>Referrer Summary</h2>
+
+<div id="referrerSummary"></div>
+
+<section class="dashboard-section">
+  <h2>My Referral Dashboard</h2>
+
+  <div id="myReferralDashboard" class="dashboard-grid">
+  </div>
+</section>
+
+    <h2>Referral History</h2>
+
+    <div id="referralHistory"></div>
+
+    <button id="clearHistory">Clear Referral History</button>
+
+    <button id="serviceButton">Continue to Jesse Phone Services</button>
+
+    <script src="script.js"></script>
+  </body>
 </html>
