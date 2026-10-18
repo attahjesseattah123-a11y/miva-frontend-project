@@ -21,11 +21,169 @@ const urlParams = new URLSearchParams(window.location.search);
 let referralFromURL = urlParams.get("ref");
 
 function formatReferrerCode(code) {
-  return code === null ||
+  if (
+    code === null ||
     code === undefined ||
     (typeof code === "string" && code.trim() === "")
-    ? "Not referred"
-    : code;
+  ) {
+    return "Not referred";
+  }
+
+  return typeof code === "string" ? code : "Unavailable";
+}
+
+function hasNonBlankReferralCode(code) {
+  return typeof code === "string" && code.trim() !== "";
+}
+
+function isRecordObject(record) {
+  return record !== null && typeof record === "object" && !Array.isArray(record);
+}
+
+function isValidStoredMoney(value) {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function formatStoredMoney(value) {
+  return isValidStoredMoney(value) ? value.toLocaleString() : "Unavailable";
+}
+
+function loadCustomerRecords() {
+  try {
+    const storedRecords = localStorage.getItem("customerRecords");
+
+    if (storedRecords === null) {
+      return { records: [], error: null };
+    }
+
+    const records = JSON.parse(storedRecords);
+
+    if (!Array.isArray(records)) {
+      return {
+        records: [],
+        error:
+          "Saved referral records are not in the expected list format. No records were changed.",
+      };
+    }
+
+    return { records: records, error: null };
+  } catch (error) {
+    return {
+      records: [],
+      error:
+        "Saved referral records could not be loaded safely. No records were changed.",
+    };
+  }
+}
+
+function inspectCustomerRecords(records) {
+  const issues = {
+    invalidEntries: 0,
+    missingNames: 0,
+    invalidReferralCodes: 0,
+    invalidAmounts: 0,
+    invalidCommissions: 0,
+  };
+
+  records.forEach(function (record) {
+    if (!isRecordObject(record)) {
+      issues.invalidEntries += 1;
+      return;
+    }
+
+    if (
+      typeof record.customerName !== "string" ||
+      record.customerName.trim() === ""
+    ) {
+      issues.missingNames += 1;
+    }
+
+    if (
+      record.referrerCode !== null &&
+      record.referrerCode !== undefined &&
+      typeof record.referrerCode !== "string"
+    ) {
+      issues.invalidReferralCodes += 1;
+    }
+
+    if (!isValidStoredMoney(record.amountReceived)) {
+      issues.invalidAmounts += 1;
+    }
+
+    if (!isValidStoredMoney(record.commission)) {
+      issues.invalidCommissions += 1;
+    }
+  });
+
+  return issues;
+}
+
+function hasCustomerRecordIssues(issues) {
+  return Object.values(issues).some(function (count) {
+    return count > 0;
+  });
+}
+
+function getCustomerRecordNotice(state) {
+  if (state.error) {
+    return state.error;
+  }
+
+  const issues = inspectCustomerRecords(state.records);
+  const messages = [];
+
+  if (issues.invalidEntries > 0) {
+    messages.push(
+      issues.invalidEntries +
+        (issues.invalidEntries === 1
+          ? " malformed record entry could not be included in summaries."
+          : " malformed record entries could not be included in summaries."),
+    );
+  }
+
+  if (issues.missingNames > 0) {
+    messages.push(
+      issues.missingNames +
+        " record(s) have no usable customer name; they are shown as Unknown customer.",
+    );
+  }
+
+  if (issues.invalidReferralCodes > 0) {
+    messages.push(
+      issues.invalidReferralCodes +
+        " record(s) have an invalid referral code; it is shown as Unavailable.",
+    );
+  }
+
+  const invalidMoneyValues =
+    issues.invalidAmounts + issues.invalidCommissions;
+
+  if (invalidMoneyValues > 0) {
+    messages.push(
+      invalidMoneyValues +
+        ' missing or invalid amount/commission value(s) are shown as "Unavailable" and excluded from totals.',
+    );
+  }
+
+  return messages.join(" ");
+}
+
+function appendCustomerRecordNotice(container, state) {
+  const notice = getCustomerRecordNotice(state);
+
+  if (notice !== "") {
+    const message = document.createElement("p");
+    message.className = "data-integrity-notice";
+    message.textContent = notice;
+    container.appendChild(message);
+  }
+}
+
+function getCustomerNameForDisplay(record) {
+  return typeof record.customerName === "string" &&
+    record.customerName.trim() !== ""
+    ? record.customerName
+    : "Unknown customer";
 }
 
 button.addEventListener("click", function () {
@@ -50,8 +208,6 @@ button.addEventListener("click", function () {
     );
 
     if (savedReferralCode !== null) {
-      referralStatus.textContent =
-        "You were referred by: " + savedReferralCode + ".";
       const savedReferralUrl = new URL("referrals.html", window.location.href);
       savedReferralUrl.searchParams.set("ref", savedReferralCode);
       const savedReferralLink = savedReferralUrl.toString();
@@ -75,9 +231,6 @@ button.addEventListener("click", function () {
     } else {
       localStorage.setItem("referralCode_" + upperName, referralCode);
 
-      referralStatus.textContent =
-        "You were referred by: " + referralCode + ".";
-
       const linkText = document.createTextNode("Your referral link is ");
       const referralAnchor = document.createElement("a");
       referralAnchor.href = referralLink;
@@ -100,9 +253,17 @@ button.addEventListener("click", function () {
 
 console.log("Referral from URL:", referralFromURL);
 
-if (referralFromURL !== null) {
-  referralStatus.textContent = "You were referred by: " + referralFromURL + ".";
+if (hasNonBlankReferralCode(referralFromURL)) {
+  referralStatus.textContent =
+    "Referral code used to open this page: " +
+    referralFromURL +
+    ". This code has not been verified.";
+} else {
+  referralStatus.textContent =
+    "No referral code was provided. This visit is not attributed to a referrer.";
+}
 
+if (referralFromURL !== null) {
   localStorage.setItem("customerReferrer", referralFromURL);
 }
 
@@ -129,8 +290,22 @@ saveCustomerButton.addEventListener("click", function () {
     return;
   }
 
-  const hasReferralCode =
-    typeof referralFromURL === "string" && referralFromURL.trim() !== "";
+  const storedData = loadCustomerRecords();
+
+  if (storedData.error) {
+    customerResult.textContent = storedData.error;
+    return;
+  }
+
+  const existingIssues = inspectCustomerRecords(storedData.records);
+
+  if (hasCustomerRecordIssues(existingIssues)) {
+    customerResult.textContent =
+      "Some saved records have incomplete or invalid fields. No new record was saved, so the existing data was not rewritten.";
+    return;
+  }
+
+  const hasReferralCode = hasNonBlankReferralCode(referralFromURL);
   const commission = hasReferralCode ? amountReceived * 0.1 : 0;
 
   const customerRecord = {
@@ -140,12 +315,16 @@ saveCustomerButton.addEventListener("click", function () {
     commission: commission,
   };
 
-  const existingCustomers =
-    JSON.parse(localStorage.getItem("customerRecords")) || [];
-
+  const existingCustomers = storedData.records;
   existingCustomers.push(customerRecord);
 
-  localStorage.setItem("customerRecords", JSON.stringify(existingCustomers));
+  try {
+    localStorage.setItem("customerRecords", JSON.stringify(existingCustomers));
+  } catch (error) {
+    customerResult.textContent =
+      "The customer record could not be saved in this browser. Please try again later.";
+    return;
+  }
 
   customerResult.textContent =
     "Customer: " +
@@ -161,47 +340,73 @@ saveCustomerButton.addEventListener("click", function () {
   displayMyReferralDashboard();
 });
 function displayReferralHistory() {
-  const customers = JSON.parse(localStorage.getItem("customerRecords")) || [];
+  const storedData = loadCustomerRecords();
 
   referralHistory.innerHTML = "";
-  totalCustomers.textContent = customers.length;
+  if (storedData.error) {
+    totalCustomers.textContent = "Unavailable";
+    totalSales.textContent = "Unavailable";
+    totalCommission.textContent = "Unavailable";
+    appendCustomerRecordNotice(referralHistory, storedData);
+    return;
+  }
+
+  const customers = storedData.records;
+  let customerCount = 0;
 
   let salesTotal = 0;
-
-  customers.forEach(function (customer) {
-    salesTotal += customer.amountReceived;
-  });
-
-  totalSales.textContent = salesTotal.toLocaleString();
-
   let commissionTotal = 0;
-
-  customers.forEach(function (customer) {
-    commissionTotal += customer.commission;
-  });
-
-  totalCommission.textContent = commissionTotal.toLocaleString();
 
   customers.forEach(function (customer) {
     const record = document.createElement("p");
 
+    if (!isRecordObject(customer)) {
+      record.textContent =
+        "Customer: Unavailable | Referred by: Unavailable | Amount: ₦Unavailable | Commission: ₦Unavailable";
+      referralHistory.appendChild(record);
+      return;
+    }
+
+    customerCount += 1;
+
+    if (isValidStoredMoney(customer.amountReceived)) {
+      salesTotal += customer.amountReceived;
+    }
+
+    if (isValidStoredMoney(customer.commission)) {
+      commissionTotal += customer.commission;
+    }
+
     record.textContent =
       "Customer: " +
-      customer.customerName +
+      getCustomerNameForDisplay(customer) +
       " | Referred by: " +
       formatReferrerCode(customer.referrerCode) +
       " | Amount: ₦" +
-      customer.amountReceived.toLocaleString() +
+      formatStoredMoney(customer.amountReceived) +
       " | Commission: ₦" +
-      customer.commission.toLocaleString();
+      formatStoredMoney(customer.commission);
 
     referralHistory.appendChild(record);
   });
+
+  totalCustomers.textContent = String(customerCount);
+  totalSales.textContent = salesTotal.toLocaleString();
+  totalCommission.textContent = commissionTotal.toLocaleString();
+  appendCustomerRecordNotice(referralHistory, storedData);
 }
 
 displayReferralHistory();
 
 clearHistoryButton.addEventListener("click", function () {
+  const storedData = loadCustomerRecords();
+
+  if (storedData.error) {
+    customerResult.textContent =
+      "Saved referral data could not be read safely, so it was not deleted.";
+    return;
+  }
+
   const confirmClear = confirm(
     "Are you sure you want to delete all referral records?",
   );
@@ -216,59 +421,85 @@ clearHistoryButton.addEventListener("click", function () {
 });
 
 function displayReferrerSummary() {
-  const customers = JSON.parse(localStorage.getItem("customerRecords")) || [];
+  const storedData = loadCustomerRecords();
 
   referrerSummary.innerHTML = "";
 
-  const referrers = {};
+  if (storedData.error) {
+    appendCustomerRecordNotice(referrerSummary, storedData);
+    return;
+  }
 
-  customers.forEach(function (customer) {
+  const referrers = new Map();
+
+  storedData.records.forEach(function (customer) {
+    if (!isRecordObject(customer)) {
+      return;
+    }
+
     const code = formatReferrerCode(customer.referrerCode);
+    let summary = referrers.get(code);
 
-    if (!referrers[code]) {
-      referrers[code] = {
+    if (!summary) {
+      summary = {
         customers: 0,
         sales: 0,
         commission: 0,
       };
+      referrers.set(code, summary);
     }
 
-    referrers[code].customers += 1;
-    referrers[code].sales += customer.amountReceived;
-    referrers[code].commission += customer.commission;
+    summary.customers += 1;
+
+    if (isValidStoredMoney(customer.amountReceived)) {
+      summary.sales += customer.amountReceived;
+    }
+
+    if (isValidStoredMoney(customer.commission)) {
+      summary.commission += customer.commission;
+    }
   });
 
-  Object.keys(referrers).forEach(function (code) {
+  referrers.forEach(function (summary, code) {
     const record = document.createElement("p");
 
     record.textContent =
       code +
       " | Customers: " +
-      referrers[code].customers +
+      summary.customers +
       " | Sales: ₦" +
-      referrers[code].sales.toLocaleString() +
+      summary.sales.toLocaleString() +
       " | Commission: ₦" +
-      referrers[code].commission.toLocaleString();
+      summary.commission.toLocaleString();
 
     referrerSummary.appendChild(record);
   });
+
+  appendCustomerRecordNotice(referrerSummary, storedData);
 }
 
 displayReferrerSummary();
 function displayMyReferralDashboard() {
-  const customers = JSON.parse(localStorage.getItem("customerRecords")) || [];
+  const storedData = loadCustomerRecords();
+
+  myReferralDashboard.replaceChildren();
+
+  if (storedData.error) {
+    appendCustomerRecordNotice(myReferralDashboard, storedData);
+    return;
+  }
 
   const myCode = referralFromURL;
+  const hasMyCode = hasNonBlankReferralCode(myCode);
 
-  if (!myCode) {
+  if (!hasMyCode) {
     const dashboardValues = [
-      ["Referral Code", "—"],
+      ["Referral Code", "Not referred"],
       ["Customers Referred", "0"],
       ["Total Sales", "₦0"],
       ["Total Commission", "₦0"],
     ];
 
-    myReferralDashboard.replaceChildren();
     dashboardValues.forEach(function ([label, value]) {
       const card = document.createElement("div");
       card.className = "dashboard-card";
@@ -283,19 +514,25 @@ function displayMyReferralDashboard() {
       myReferralDashboard.appendChild(card);
     });
 
+    appendCustomerRecordNotice(myReferralDashboard, storedData);
     return;
   }
 
-  const myCustomers = customers.filter(function (customer) {
-    return customer.referrerCode === myCode;
+  const myCustomers = storedData.records.filter(function (customer) {
+    return isRecordObject(customer) && customer.referrerCode === myCode;
   });
 
   let mySales = 0;
   let myCommission = 0;
 
   myCustomers.forEach(function (customer) {
-    mySales += customer.amountReceived;
-    myCommission += customer.commission;
+    if (isValidStoredMoney(customer.amountReceived)) {
+      mySales += customer.amountReceived;
+    }
+
+    if (isValidStoredMoney(customer.commission)) {
+      myCommission += customer.commission;
+    }
   });
   const dashboardValues = [
     ["Referral Code", myCode],
@@ -304,7 +541,6 @@ function displayMyReferralDashboard() {
     ["Total Commission", "₦" + myCommission.toLocaleString()],
   ];
 
-  myReferralDashboard.replaceChildren();
   dashboardValues.forEach(function ([label, value]) {
     const card = document.createElement("div");
     card.className = "dashboard-card";
@@ -319,21 +555,32 @@ function displayMyReferralDashboard() {
     myReferralDashboard.appendChild(card);
   });
 
+  appendCustomerRecordNotice(myReferralDashboard, storedData);
+
   return;
 }
 
 displayMyReferralDashboard();
 
-result.addEventListener("click", function (event) {
+result.addEventListener("click", async function (event) {
   if (event.target.id === "copyReferralLink") {
     const link = event.target.dataset.link;
+    const copyButton = event.target;
 
-    navigator.clipboard.writeText(link);
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        throw new Error("Clipboard access is unavailable.");
+      }
 
-    event.target.textContent = "Copied!";
+      await navigator.clipboard.writeText(link);
+      copyButton.textContent = "Copied!";
+    } catch (error) {
+      copyButton.textContent =
+        "Could not copy. Select the link above and copy it manually.";
+    }
 
     setTimeout(function () {
-      event.target.textContent = "Copy Link";
-    }, 2000);
+      copyButton.textContent = "Copy Link";
+    }, 3000);
   }
 });
