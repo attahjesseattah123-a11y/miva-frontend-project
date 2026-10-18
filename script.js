@@ -20,6 +20,14 @@ const urlParams = new URLSearchParams(window.location.search);
 
 let referralFromURL = urlParams.get("ref");
 
+function formatReferrerCode(code) {
+  return code === null ||
+    code === undefined ||
+    (typeof code === "string" && code.trim() === "")
+    ? "Not referred"
+    : code;
+}
+
 button.addEventListener("click", function () {
   const name = nameInput.value.trim();
 
@@ -30,7 +38,7 @@ button.addEventListener("click", function () {
     const randomNumber = Math.floor(Math.random() * 100);
     const referralCode = upperName + randomNumber;
 
-    const referralUrl = new URL(window.location.origin);
+    const referralUrl = new URL("referrals.html", window.location.href);
     referralUrl.searchParams.set("ref", referralCode);
     const referralLink = referralUrl.toString();
 
@@ -44,7 +52,7 @@ button.addEventListener("click", function () {
     if (savedReferralCode !== null) {
       referralStatus.textContent =
         "You were referred by: " + savedReferralCode + ".";
-      const savedReferralUrl = new URL(window.location.origin);
+      const savedReferralUrl = new URL("referrals.html", window.location.href);
       savedReferralUrl.searchParams.set("ref", savedReferralCode);
       const savedReferralLink = savedReferralUrl.toString();
 
@@ -121,7 +129,9 @@ saveCustomerButton.addEventListener("click", function () {
     return;
   }
 
-  const commission = amountReceived * 0.1;
+  const hasReferralCode =
+    typeof referralFromURL === "string" && referralFromURL.trim() !== "";
+  const commission = hasReferralCode ? amountReceived * 0.1 : 0;
 
   const customerRecord = {
     customerName: customerName,
@@ -141,7 +151,7 @@ saveCustomerButton.addEventListener("click", function () {
     "Customer: " +
     customerName +
     " | Referred by: " +
-    referralFromURL +
+    formatReferrerCode(referralFromURL) +
     " | Amount Received: ₦" +
     amountReceived.toLocaleString() +
     " | Commission: ₦" +
@@ -179,7 +189,7 @@ function displayReferralHistory() {
       "Customer: " +
       customer.customerName +
       " | Referred by: " +
-      customer.referrerCode +
+      formatReferrerCode(customer.referrerCode) +
       " | Amount: ₦" +
       customer.amountReceived.toLocaleString() +
       " | Commission: ₦" +
@@ -213,7 +223,7 @@ function displayReferrerSummary() {
   const referrers = {};
 
   customers.forEach(function (customer) {
-    const code = customer.referrerCode;
+    const code = formatReferrerCode(customer.referrerCode);
 
     if (!referrers[code]) {
       referrers[code] = {
