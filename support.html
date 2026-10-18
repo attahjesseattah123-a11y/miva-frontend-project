@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Learn how Jesse Phone Services plans to provide step-by-step remote smartphone support." />
+    <meta name="description" content="Learn about step-by-step smartphone support from Jesse Phone Services." />
     <title>Support | Jesse Phone Services</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -19,16 +19,116 @@
       </nav>
     </header>
 
-    <main class="page-shell">
-      <section class="page-intro">
-        <p class="eyebrow">Support</p>
-        <h1>Phone help, step by step</h1>
-        <p>Jesse Phone Services is being developed to help customers understand and solve smartphone problems through remote guidance.</p>
+    <main class="page-shell support-page">
+      <section class="page-intro support-hero" aria-labelledby="support-heading">
+        <p class="eyebrow">Jesse Phone Services Support</p>
+        <h1 id="support-heading">Phone help, one clear step at a time</h1>
+        <p>Get to know the planned JPS support approach: work through a smartphone problem with understandable guidance and learn what your device is doing along the way.</p>
+        <a class="support-home-link" href="index.html">Back to Home</a>
       </section>
-      <section class="content-section content-panel">
-        <h2>Support service in development</h2>
-        <p>The support request process is not available on this website yet. No support request can be submitted or received here at this time.</p>
-        <p>When the process is ready, this page will explain how to describe a phone issue and what to expect during a support session.</p>
+
+      <section class="support-section" aria-labelledby="support-topics-heading">
+        <div class="support-section-heading">
+          <p class="eyebrow">What we can help you understand</p>
+          <h2 id="support-topics-heading">Everyday smartphone problems</h2>
+          <p>When the service is operational, customers may be able to seek guidance with common issues such as:</p>
+        </div>
+        <div class="support-topic-grid">
+          <article class="feature-card support-topic-card">
+            <h3>Connections and settings</h3>
+            <p>Understanding Wi-Fi, mobile data, Bluetooth, and useful device settings.</p>
+          </article>
+          <article class="feature-card support-topic-card">
+            <h3>Apps and updates</h3>
+            <p>Working through app problems, permissions, and update questions.</p>
+          </article>
+          <article class="feature-card support-topic-card">
+            <h3>Storage and everyday use</h3>
+            <p>Making sense of storage messages, phone features, and common device tasks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="support-section support-process" aria-labelledby="support-process-heading">
+        <div class="support-section-heading">
+          <p class="eyebrow">A guided process</p>
+          <h2 id="support-process-heading">How support is planned to work</h2>
+        </div>
+        <ol class="support-steps">
+          <li>
+            <span class="support-step-number">Step 1</span>
+            <h3>Describe the problem</h3>
+            <p>Tell us what you were trying to do and what happened. Include any message your phone displayed.</p>
+          </li>
+          <li>
+            <span class="support-step-number">Step 2</span>
+            <h3>Share relevant phone details</h3>
+            <p>Provide the phone brand and model, plus a way to contact you if the service is available.</p>
+          </li>
+          <li>
+            <span class="support-step-number">Step 3</span>
+            <h3>Receive guided troubleshooting</h3>
+            <p>Once the service is operational, JPS can guide you through steps and explain what they do.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="support-section support-request" aria-labelledby="request-preview-heading">
+        <div class="support-section-heading support-request-heading">
+          <p class="eyebrow">Request form preview</p>
+          <h2 id="request-preview-heading">Share details about a phone issue</h2>
+          <p>This preview shows the information a future support request may ask for.</p>
+        </div>
+
+        <div class="support-status" role="note" id="support-availability">
+          <strong>Not available yet:</strong> The support request system is still under development. These fields are disabled; this page cannot submit or deliver a request, and it does not store form entries.
+        </div>
+
+        <p class="support-privacy"><strong>Privacy reminder:</strong> Never share passwords, verification codes, banking PINs, recovery keys, or other security secrets when asking for help.</p>
+
+        <fieldset class="support-preview-fields" disabled aria-describedby="support-availability">
+          <legend>Preview only — request fields are not active</legend>
+          <div class="support-fields-grid">
+            <div class="support-field">
+              <label for="supportCustomerName">Customer name</label>
+              <input id="supportCustomerName" name="customerName" type="text" placeholder="Your name" />
+            </div>
+            <div class="support-field">
+              <label for="phoneModel">Phone brand and model</label>
+              <input id="phoneModel" name="phoneModel" type="text" placeholder="For example, your phone's brand and model" />
+            </div>
+            <div class="support-field support-field-full">
+              <label for="problemDescription">What problem are you having?</label>
+              <textarea id="problemDescription" name="problemDescription" rows="5" placeholder="Describe what happened and any message shown on your phone"></textarea>
+            </div>
+            <div class="support-field support-field-full">
+              <label for="stepsTried">What have you already tried? <span class="optional-label">Optional</span></label>
+              <textarea id="stepsTried" name="stepsTried" rows="3" placeholder="This can help avoid repeating steps"></textarea>
+            </div>
+            <div class="support-field">
+              <label for="contactMethod">Preferred contact method</label>
+              <select id="contactMethod" name="contactMethod">
+                <option value="">Choose a preferred method</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="phone">Phone call</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+            <div class="support-field">
+              <label for="contactDetails">Contact details</label>
+              <input id="contactDetails" name="contactDetails" type="text" placeholder="Phone number or email address" />
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="support-next-steps" aria-labelledby="support-next-heading">
+        <div>
+          <p class="eyebrow">Keep learning</p>
+          <h2 id="support-next-heading">Understand more about your phone</h2>
+          <p>Explore the Learning page for information about planned practical guides and resources.</p>
+        </div>
+        <a class="button button-primary" href="learning.html">Explore Learning</a>
       </section>
     </main>
 

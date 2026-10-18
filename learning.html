@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Jesse Phone Services learning resources for understanding smartphone features and troubleshooting." />
+    <meta name="description" content="Beginner-friendly guides to Android internet connections, apps, storage, and settings from Jesse Phone Services." />
     <title>Learning | Jesse Phone Services</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -19,17 +19,168 @@
       </nav>
     </header>
 
-    <main class="page-shell">
-      <section class="page-intro">
-        <p class="eyebrow">Learning</p>
-        <h1>Understand your smartphone</h1>
-        <p>Jesse Phone Services plans to offer clear, practical guides that help people learn how their devices work.</p>
+    <main class="page-shell learning-page">
+      <section class="page-intro learning-hero" aria-labelledby="learning-heading">
+        <p class="eyebrow">Learn at your own pace</p>
+        <h1 id="learning-heading">Understand your phone, one step at a time</h1>
+        <p>Explore simple guides to common smartphone questions. Each one explains what might be happening, what you can safely try, and when to get more help.</p>
+        <p class="learning-hero-promise">We don't just help you fix your phone. We help you understand it.</p>
       </section>
-      <section class="content-section content-panel">
-        <h2>Learning resources in development</h2>
-        <p>Phone troubleshooting guides and educational resources are not available on this page yet.</p>
-        <p>Future guides will be added here when they are ready to use.</p>
-      </section>
+
+      <nav class="learning-guide-nav" aria-label="Browse learning guides">
+        <h2>Browse the guides</h2>
+        <ul>
+          <li><a href="#guide-internet">Mobile data and internet</a></li>
+          <li><a href="#guide-app-crashing">An app keeps crashing</a></li>
+          <li><a href="#guide-storage">Manage phone storage safely</a></li>
+          <li><a href="#guide-settings">Basic Android settings</a></li>
+        </ul>
+      </nav>
+
+      <p class="learning-device-note">The instructions below focus on Android phones. Android menus can have different names or layouts depending on the phone brand and software version. If you cannot find a setting, use the Settings search or your phone maker's official help.</p>
+
+      <div class="learning-guide-list">
+        <article class="learning-guide" id="guide-internet" aria-labelledby="internet-heading">
+          <header class="learning-guide-header">
+            <div>
+              <p class="eyebrow">Connection basics</p>
+              <h2 id="internet-heading">When mobile data or internet is not working</h2>
+            </div>
+            <span class="difficulty-badge">Beginner</span>
+          </header>
+          <p class="guide-intro">If websites will not load or apps say they are offline, first check whether the problem affects one app or the whole phone.</p>
+
+          <section class="guide-part" aria-labelledby="internet-causes">
+            <h3 id="internet-causes">What might be causing it?</h3>
+            <p>Mobile data may be switched off, the phone may have weak signal, your data plan may need attention, or a temporary network issue may be affecting your area. If only one app is offline, that app may have a separate problem.</p>
+          </section>
+
+          <section class="guide-part" aria-labelledby="internet-steps">
+            <h3 id="internet-steps">Steps to try</h3>
+            <ol>
+              <li>Try opening a second website or app. If only one app fails, check that app for an update or service notice.</li>
+              <li>Look at the signal bars. If the signal is weak, move somewhere with better reception and try again.</li>
+              <li>Open Settings and search for <strong>Mobile data</strong> or <strong>Cellular data</strong>. Make sure it is on. Your device may place it under <strong>Network &amp; internet</strong>, <strong>Connections</strong>, or another menu.</li>
+              <li>Check whether Airplane mode is on. If it is off, you can switch it on briefly, wait about 10 seconds, then switch it off again. This makes the phone reconnect to the mobile network.</li>
+              <li>Restart the phone and test again. A restart can clear a temporary connection problem.</li>
+              <li>If Wi-Fi is available, test it separately. If Wi-Fi works but mobile data does not, check your data plan or contact your mobile provider. Using mobile data may count toward your plan.</li>
+            </ol>
+          </section>
+
+          <section class="guide-part guide-next" aria-labelledby="internet-next">
+            <h3 id="internet-next">If it still does not work</h3>
+            <p>Contact your mobile provider if mobile data has no signal or keeps failing. For Wi-Fi problems, check whether other devices can connect and ask the network owner or internet provider for help. Avoid changing advanced network settings unless you know what they do.</p>
+          </section>
+          <p class="guide-source">More detail: <a href="https://support.google.com/android/answer/2651367?hl=en">Google Android Help: fix internet connection problems</a>.</p>
+        </article>
+
+        <article class="learning-guide" id="guide-app-crashing" aria-labelledby="app-heading">
+          <header class="learning-guide-header">
+            <div>
+              <p class="eyebrow">App basics</p>
+              <h2 id="app-heading">When an app keeps closing or crashing</h2>
+            </div>
+            <span class="difficulty-badge">Beginner</span>
+          </header>
+          <p class="guide-intro">An app that closes unexpectedly may have a temporary issue, need an update, or be affected by the phone's available storage or software.</p>
+
+          <section class="guide-part" aria-labelledby="app-causes">
+            <h3 id="app-causes">What might be causing it?</h3>
+            <p>The app may have a bug, an incomplete update, or a temporary problem. If many apps are closing, the phone may need a restart, more free storage, or a system update.</p>
+          </section>
+
+          <section class="guide-part" aria-labelledby="app-steps">
+            <h3 id="app-steps">Steps to try</h3>
+            <ol>
+              <li>Close the app and open it again. If it remains stuck, restart the phone.</li>
+              <li>Check the official app store for an update to that app. Updates can include fixes for known problems.</li>
+              <li>Check whether other apps also have trouble. If several apps are affected, check available phone storage and system updates.</li>
+              <li>If only one app is affected, open its App info in Settings and look for <strong>Force stop</strong>, then reopen it. Menu wording varies by phone.</li>
+              <li>If the problem continues, you can consider clearing that app's <strong>cache</strong>. Cache is temporary data. Read the option carefully: do not choose <strong>Clear storage</strong> or <strong>Clear data</strong>, which can remove information saved by the app.</li>
+            </ol>
+          </section>
+
+          <section class="guide-part guide-next" aria-labelledby="app-next">
+            <h3 id="app-next">If it still does not work</h3>
+            <p>Check the app maker's official help or contact the app developer. Before uninstalling an app or clearing its data, make sure important information is backed up and you know how to sign back in. Some app data may not be recoverable.</p>
+          </section>
+          <p class="guide-source">More detail: <a href="https://support.google.com/android/answer/2668665?hl=en">Google Android Help: fix an installed app that is not working</a>.</p>
+        </article>
+
+        <article class="learning-guide" id="guide-storage" aria-labelledby="storage-heading">
+          <header class="learning-guide-header">
+            <div>
+              <p class="eyebrow">Space and files</p>
+              <h2 id="storage-heading">Manage phone storage safely</h2>
+            </div>
+            <span class="difficulty-badge">Beginner</span>
+          </header>
+          <p class="guide-intro">Storage is where the phone keeps things such as photos, videos, downloads, and app information. When it is nearly full, you may have trouble saving files or updating apps.</p>
+
+          <section class="guide-part" aria-labelledby="storage-causes">
+            <h3 id="storage-causes">What might be using the space?</h3>
+            <p>Large videos, downloaded files, offline media, and apps can take up room. Your phone's Storage screen can show which categories use the most space.</p>
+          </section>
+
+          <section class="guide-part" aria-labelledby="storage-steps">
+            <h3 id="storage-steps">Steps to try</h3>
+            <p><strong>Before deleting anything, back up important photos, videos, documents, and app information. Check that the backup completed and that you can access it.</strong></p>
+            <ol>
+              <li>Open Settings and search for <strong>Storage</strong>. Review the categories before deciding what to remove.</li>
+              <li>Look through downloads and offline music or videos. Delete only items you recognize and no longer need.</li>
+              <li>Review large photos and videos. Back them up to a place you trust, verify the copies, and only then remove local copies if you choose.</li>
+              <li>Review apps you installed and no longer use. Uninstall only apps you recognize; check whether each app contains information you need first.</li>
+              <li>Review the trash or recently deleted folder before emptying it. Emptying it may make those files harder or impossible to recover.</li>
+            </ol>
+            <p>Do not delete unfamiliar system files or install unknown “cleaner” apps. You can often review files using tools already on your phone.</p>
+          </section>
+
+          <section class="guide-part guide-next" aria-labelledby="storage-next">
+            <h3 id="storage-next">If storage still seems full</h3>
+            <p>Recheck the Storage screen and review the largest categories. If you are unsure what a file or category does, leave it in place and ask your device maker or a trusted technician before deleting it.</p>
+          </section>
+          <p class="guide-source">More detail: <a href="https://support.google.com/googleplay/answer/7431795?hl=en">Google Play Help: free up storage on Android</a>.</p>
+        </article>
+
+        <article class="learning-guide" id="guide-settings" aria-labelledby="settings-heading">
+          <header class="learning-guide-header">
+            <div>
+              <p class="eyebrow">Phone basics</p>
+              <h2 id="settings-heading">Understand basic Android settings</h2>
+            </div>
+            <span class="difficulty-badge">Beginner</span>
+          </header>
+          <p class="guide-intro">Settings are controls for how your phone and apps behave. Learning where common settings live can help you make changes confidently and undo them when needed.</p>
+
+          <section class="guide-part" aria-labelledby="settings-causes">
+            <h3 id="settings-causes">Why settings can feel confusing</h3>
+            <p>Phone makers arrange menus differently, and the wording can change between Android versions. Quick Settings provides shortcuts for common controls; the Settings app contains more detailed options.</p>
+          </section>
+
+          <section class="guide-part" aria-labelledby="settings-steps">
+            <h3 id="settings-steps">Steps to try</h3>
+            <ol>
+              <li>Swipe down from the top of the screen to see Quick Settings. Swipe down again to see more shortcuts. The available tiles may differ by device.</li>
+              <li>Open the Settings app for the full list of controls. Use its search field to look for a term such as <strong>Display</strong>, <strong>Notifications</strong>, or <strong>Battery</strong>.</li>
+              <li>Change one setting at a time, then check whether it helped. If it did not, return to the same setting and restore its previous value.</li>
+              <li>Before allowing an app to access your camera, microphone, contacts, or location, consider whether that access is needed for the app's purpose. You can review permissions in Settings; menu names vary.</li>
+              <li>If you are unsure what a control does, leave it unchanged and look up that setting in official help for your phone brand.</li>
+            </ol>
+          </section>
+
+          <section class="guide-part guide-next" aria-labelledby="settings-next">
+            <h3 id="settings-next">If you cannot find a setting</h3>
+            <p>Search within Settings first. If the option is not listed, check your phone maker's official instructions for your model and Android version. Avoid changing advanced or security settings just to experiment.</p>
+          </section>
+          <p class="guide-source">More detail: <a href="https://support.google.com/android/answer/9083864?hl=en">Google Android Help: change settings quickly</a>.</p>
+        </article>
+      </div>
+
+      <aside class="learning-footer-note">
+        <h2>Need one-to-one guidance?</h2>
+        <p>The JPS support request process is not available yet. Visit the Support page to learn about the planned process.</p>
+        <a href="support.html">Read about Support</a>
+      </aside>
     </main>
 
     <footer class="site-footer">Jesse Phone Services</footer>
