@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Manage Jesse Phone Services referral links, customer records, and commission summaries." />
-    <title>Referrals | Jesse Phone Services</title>
+    <title>Referral Dashboard | Jesse Phone Services</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
-    <header class="site-header">
-      <a class="brand" href="index.html" aria-label="Jesse Phone Services home">Jesse Phone Services</a>
-      <nav class="site-nav" aria-label="Main navigation">
+  <body class="referrals-page">
+    <header class="site-header referral-header">
+      <a class="brand referral-brand" href="index.html" aria-label="Jesse Phone Services home">
+        <span class="referral-brand-mark" aria-hidden="true">JPS</span>
+        <span class="referral-brand-copy">
+          <strong>Jesse Phone Services</strong>
+          <small>Referral programme</small>
+        </span>
+      </a>
+      <nav class="site-nav referral-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="support.html">Support</a>
         <a href="learning.html">Learning</a>
@@ -19,76 +25,123 @@
       </nav>
     </header>
 
-    <main class="page-shell">
-      <section class="page-intro">
-        <p class="eyebrow">Jesse Phone Services</p>
-        <h1>Refer a Customer and Earn 10%</h1>
-        <p>
-          Bring a customer to Jesse Phone Services and earn 10% of the amount I
-          receive from that customer.
-        </p>
+    <main class="page-shell referrals-shell">
+      <section class="referrals-hero" aria-labelledby="referrals-title">
+        <div class="referrals-hero-copy">
+          <p class="eyebrow">Jesse Phone Services · Referral programme</p>
+          <h1 id="referrals-title">Share helpful phone support. Earn 10%.</h1>
+          <p>
+            Refer someone who needs smartphone help. When a referred customer
+            receives support, the programme records a commission based on the
+            amount received.
+          </p>
+          <a class="button button-primary" href="#create-link">Create your referral link</a>
+          <p id="referralStatus" class="status-panel referral-status" aria-live="polite"></p>
+        </div>
+        <aside class="commission-highlight" aria-label="Referral commission rate">
+          <span class="commission-highlight-label">Commission rate</span>
+          <strong>10%</strong>
+          <p>of the amount received from a referred customer</p>
+        </aside>
       </section>
 
-      <section class="content-section" aria-labelledby="referrer-heading">
-        <h2 id="referrer-heading">Enter Your Full Name</h2>
-        <label for="referrerName">Referrer Name</label>
-        <input type="text" id="referrerName" placeholder="Full Name" />
-        <button id="generateLink" class="button button-primary" type="button">Generate My Referral Link</button>
-        <p id="result" class="status-panel" aria-live="polite"></p>
-        <p id="referralStatus" class="status-panel" aria-live="polite"></p>
-      </section>
-
-      <section class="content-section" aria-labelledby="customer-heading">
-        <h2 id="customer-heading">Customer Information</h2>
-        <label for="customerName">Customer Name</label>
-        <input type="text" id="customerName" placeholder="Customer Full Name" />
-        <label for="amountReceived">Amount Received</label>
-        <input type="number" id="amountReceived" placeholder="Amount Received" />
-        <button id="saveCustomer" class="button button-primary" type="button">Save Customer</button>
-        <p id="customerResult" class="status-panel" aria-live="polite"></p>
-      </section>
-
-      <section class="content-section" aria-labelledby="dashboard-heading">
-        <h2 id="dashboard-heading">Dashboard</h2>
-        <div class="dashboard">
-          <article class="card">
-            <h3>Total Customers</h3>
+      <section class="dashboard-section referral-metrics-section" aria-labelledby="dashboard-heading">
+        <div class="section-heading-row">
+          <div>
+            <p class="eyebrow">Your activity</p>
+            <h2 id="dashboard-heading">Referral overview</h2>
+          </div>
+          <span class="local-badge">Saved in this browser</span>
+        </div>
+        <div class="dashboard referral-metrics">
+          <article class="card metric-card">
+            <h3>Total customers</h3>
             <p><span id="totalCustomers">0</span></p>
           </article>
-          <article class="card">
-            <h3>Total Sales</h3>
+          <article class="card metric-card">
+            <h3>Amount received</h3>
             <p>₦<span id="totalSales">0</span></p>
           </article>
-          <article class="card">
-            <h3>Total Commission</h3>
+          <article class="card metric-card metric-card-highlight">
+            <h3>Total commission</h3>
             <p>₦<span id="totalCommission">0</span></p>
           </article>
         </div>
-        <p class="storage-notice"><strong>Storage notice:</strong> Referral records are saved only in this browser and are not synced across users or devices.</p>
+        <p class="storage-notice referral-storage-notice">
+          <strong>Local storage:</strong> Referral records are saved only in this
+          browser and are not synced across users or devices.
+        </p>
       </section>
 
-      <section class="content-section" aria-labelledby="summary-heading">
-        <h2 id="summary-heading">Referrer Summary</h2>
-        <div id="referrerSummary" class="content-panel"></div>
+      <div class="referral-tools-grid">
+        <section id="create-link" class="content-section referral-section" aria-labelledby="referrer-heading">
+          <div class="section-kicker" aria-hidden="true">01</div>
+          <p class="eyebrow">Share your link</p>
+          <h2 id="referrer-heading">Create your referral link</h2>
+          <p class="section-description">
+            Enter your name to generate a personal link. The link includes your
+            referral code so visits can be attributed to it.
+          </p>
+          <label for="referrerName">Your name</label>
+          <input type="text" id="referrerName" name="referrerName" autocomplete="name" placeholder="Enter your full name" />
+          <button id="generateLink" class="button button-primary" type="button">Generate my referral link</button>
+          <p id="result" class="status-panel referral-result" aria-live="polite"></p>
+        </section>
+
+        <section id="add-customer" class="content-section referral-section" aria-labelledby="customer-heading">
+          <div class="section-kicker" aria-hidden="true">02</div>
+          <p class="eyebrow">Record a completed sale</p>
+          <h2 id="customer-heading">Customer information</h2>
+          <p class="section-description">
+            Add a customer and the amount received to update the local referral
+            history.
+          </p>
+          <label for="customerName">Customer name</label>
+          <input type="text" id="customerName" name="customerName" autocomplete="off" placeholder="Enter customer name" />
+          <label for="amountReceived">Amount received (₦)</label>
+          <input type="number" id="amountReceived" name="amountReceived" min="0.01" step="any" inputmode="decimal" placeholder="Enter amount" />
+          <button id="saveCustomer" class="button button-primary" type="button">Save customer record</button>
+          <p id="customerResult" class="status-panel customer-result" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <div class="referral-details-grid">
+        <section class="content-section referral-section" aria-labelledby="personal-dashboard-heading">
+          <p class="eyebrow">Your referral link</p>
+          <h2 id="personal-dashboard-heading">Personal dashboard</h2>
+          <div id="myReferralDashboard" class="dashboard-grid referral-personal-dashboard"></div>
+        </section>
+
+        <section class="content-section referral-section" aria-labelledby="summary-heading">
+          <p class="eyebrow">Across referral codes</p>
+          <h2 id="summary-heading">Referrer summary</h2>
+          <div id="referrerSummary" class="content-panel referral-list-panel"></div>
+        </section>
+      </div>
+
+      <section class="content-section referral-section referral-history-section" aria-labelledby="history-heading">
+        <div class="section-heading-row history-heading-row">
+          <div>
+            <p class="eyebrow">Saved activity</p>
+            <h2 id="history-heading">Referral history</h2>
+          </div>
+          <button id="clearHistory" class="button button-danger" type="button">Clear history</button>
+        </div>
+        <p class="section-description history-description">
+          Customer records and their saved commission values appear here.
+        </p>
+        <div id="referralHistory" class="content-panel referral-list-panel"></div>
       </section>
 
-      <section class="dashboard-section content-section" aria-labelledby="personal-dashboard-heading">
-        <h2 id="personal-dashboard-heading">My Referral Dashboard</h2>
-        <div id="myReferralDashboard" class="dashboard-grid"></div>
-      </section>
-
-      <section class="content-section" aria-labelledby="history-heading">
-        <h2 id="history-heading">Referral History</h2>
-        <div id="referralHistory" class="content-panel"></div>
-        <button id="clearHistory" class="button button-danger" type="button">Clear Referral History</button>
-      </section>
-
-      <div class="page-actions">
+      <div class="page-actions referral-page-actions">
         <button id="serviceButton" class="button button-secondary" type="button">Continue to Jesse Phone Services</button>
       </div>
     </main>
 
-    <footer class="site-footer">Jesse Phone Services</footer>
+    <footer class="site-footer referral-footer">
+      <span class="referral-footer-mark" aria-hidden="true">JPS</span>
+      <span>Jesse Phone Services</span>
+    </footer>
     <script src="script.js"></script>
   </body>
 </html>

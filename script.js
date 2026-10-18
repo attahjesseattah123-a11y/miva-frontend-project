@@ -393,6 +393,15 @@ function displayReferralHistory() {
   totalCustomers.textContent = String(customerCount);
   totalSales.textContent = salesTotal.toLocaleString();
   totalCommission.textContent = commissionTotal.toLocaleString();
+
+  if (customers.length === 0) {
+    const emptyState = document.createElement("p");
+    emptyState.className = "empty-state";
+    emptyState.textContent =
+      "No referral records yet. Saved customer records will appear here.";
+    referralHistory.appendChild(emptyState);
+  }
+
   appendCustomerRecordNotice(referralHistory, storedData);
 }
 
